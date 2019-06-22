@@ -28,8 +28,8 @@
             {!! Form::password('password', ['class'=>'form-control']) !!}
         </div>
         <div class="form-group">
-            {!! Form::label('file', 'Title') !!}
-            {!! Form::file('file', ['class'=>'form-control']) !!}
+            {!! Form::label('photo_id', 'Title') !!}
+            {!! Form::file('photo_id', ['class'=>'form-control']) !!}
         </div>
 
 
