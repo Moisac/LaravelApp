@@ -9,6 +9,7 @@ use App\Http\Requests\UsersRequest;
 use App\Http\Requests\UsersEditRequest;
 use App\Http\Requests;
 use App\Photo;
+use Illuminate\Support\Facades\Session;
 
 class AdminUsersController extends Controller
 {
@@ -91,10 +92,12 @@ class AdminUsersController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
+        
 
         $roles = Role::pluck('name', 'id')->all();
 
         return view('admin.users.edit', compact('user', 'roles'));
+        
     }
 
     /**
@@ -107,6 +110,7 @@ class AdminUsersController extends Controller
     public function update(UsersEditRequest $request, $id)
     {
         $user = User::findOrFail($id);
+        
 
         $input = $request->all();
 
@@ -123,10 +127,12 @@ class AdminUsersController extends Controller
         $input['password'] = bcrypt($request->password);
 
         $user->update($input);
-
         
+        Session::flash('updated_user', 'The user has been deleted!');
 
         return redirect('/admin/users');
+
+        
 
     }
 
@@ -138,6 +144,15 @@ class AdminUsersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        unlink(public_path() . $user->photo->file);
+
+        $user->delete();
+
+        Session::flash('deleted_user', 'The user has been deleted!');
+
+
+        return redirect('/admin/users');
     }
 }

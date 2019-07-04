@@ -3,14 +3,18 @@
 
 @section('content')
 
+    @if(Session::has('updated_user'))
+      <p class="bg-danger">{{ session('updated_user') }}</p>
+    @endif
+
     <h1>Edit User</h1>
 
-    <div class="row">
+    <div style="margin-bottom: 50px;" class="row">
         <div class="col-sm-3">
             <img src="{{ $user->photo ? $user->photo->file : '' }}" class="img img-responsive img-rounded">
         </div>
     
-    <div class="col-sm-9">
+    <div class="col-sm-9 mb-4">
     {!! Form::model($user,['method'=>'PATCH', 'action'=>['AdminUsersController@update', $user->id], 'files'=>true]) !!}
     {{csrf_field()}}
         <div class="form-group">
@@ -40,9 +44,20 @@
 
 
         <div class="form-group">
-            {!! Form::submit('Add User', ['class'=>'btn btn-primary']) !!}
+            {!! Form::submit('Update User', ['class'=>'btn btn-primary pull-left']) !!}
         </div>
 
+
+    {!! Form::close() !!}
+
+    <!-- Delete user form-->
+
+    {!! Form::open(['method'=>'DELETE', 'action'=>['AdminUsersController@destroy', $user->id]]) !!}
+    {{csrf_field()}}
+
+        <div class="form-group">
+            {!! Form::submit('Delete user', ['class'=>'btn btn-danger pull-right']) !!}
+        </div>
 
     {!! Form::close() !!}
 
